@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.study.baemin.api.domain.shop.repository.ShopMapper">
+    <select id="getShopList" parameterType="SearchRequestDTO" resultType="ShopDTO">
+        <bind name="offset"
+              value="(searchPage - 1) * pageSize"/>
+
+        SELECT
+        *
+        FROM tb_shop
+        where
+        1=1
+        <if test="searchText != null and searchText != ''">
+            and shop_name LIKE CONCAT('%', #{searchText}, '%')
+        </if>
+        and close_yn = 0
+        ORDER BY shop_seq DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="getShopListCount" parameterType="SearchRequestDTO" resultType="int">
+        SELECT
+        count(*)
+        FROM tb_shop
+        where
+        1=1
+        <if test="searchText != null and searchText != ''">
+            and shop_name LIKE CONCAT('%', #{searchText}, '%')
+        </if>
+        and close_yn = 0
+    </select>
+
+    <select id="getShopDetail" parameterType="int" resultType="ShopEntity">
+        SELECT
+        *
+        FROM tb_shop
+        where
+        shop_seq=#{shopSeq}
+    </select>
+
+    <select id="getShopStarRate" parameterType="int" resultType="float">
+        SELECT
+        AVG(REVIEW_RATE)
+        FROM tb_shop
+        where
+        shop_seq=#{shopSeq}
+    </select>
+
+
+</mapper>
