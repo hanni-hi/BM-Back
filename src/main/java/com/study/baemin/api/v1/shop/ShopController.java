@@ -4,6 +4,8 @@ import com.study.baemin.api.domain.common.dto.PagingDto;
 import com.study.baemin.api.domain.common.dto.SearchRequestDTO;
 import com.study.baemin.api.domain.shop.dto.ShopDTO;
 import com.study.baemin.api.domain.shop.dto.ShopDetailDTO;
+import com.study.baemin.api.domain.shop.dto.ShopInsertDTO;
+import com.study.baemin.api.domain.shop.dto.ShopUpdateDTO;
 import com.study.baemin.api.domain.shop.service.ShopService;
 import com.study.baemin.global.response.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -37,6 +39,30 @@ public class ShopController {
             (@Valid @RequestParam("ShopSeq") int ShopSeq){
 
         return ResponseEntity.ok(ApiResponse.ok(shopService.getShopDetail(ShopSeq)));
+    }
+
+    @Operation (summary="상점 등록", description="상점 정보를 등록합니다.")
+    @PostMapping("/insert")
+    public ResponseEntity<ApiResponse<String>> insertShopData
+            (@RequestBody ShopInsertDTO shopInsertDTO){
+
+        return ResponseEntity.ok(ApiResponse.ok(shopService.insertShopData(shopInsertDTO)));
+    }
+
+    @Operation (summary="상점 데이터 수정", description="상점 정보를 수정합니다.")
+    @PutMapping ("/update/{id}")
+    public ResponseEntity<ApiResponse<String>> updateShopData
+
+            (@Valid @PathVariable int id, @RequestBody ShopUpdateDTO shopUpdateDTO){
+        return ResponseEntity.ok(ApiResponse.ok(shopService.updateShopData(id, shopUpdateDTO)));
+    }
+
+    @Operation (summary="상점 데이터 삭제", description="상점 정보를 삭제합니다.")
+    @DeleteMapping ("/delete/{id}")
+    public ResponseEntity<ApiResponse<String>> deleteShopData
+
+            (@Valid @PathVariable int id){
+        return ResponseEntity.ok(ApiResponse.ok(shopService.deleteShopData(id)));
     }
 
 }

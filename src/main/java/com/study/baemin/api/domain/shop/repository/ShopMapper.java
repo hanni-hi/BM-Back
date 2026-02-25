@@ -2,6 +2,8 @@ package com.study.baemin.api.domain.shop.repository;
 
 import com.study.baemin.api.domain.common.dto.SearchRequestDTO;
 import com.study.baemin.api.domain.shop.dto.ShopDTO;
+import com.study.baemin.api.domain.shop.dto.ShopInsertDTO;
+import com.study.baemin.api.domain.shop.dto.ShopUpdateDTO;
 import com.study.baemin.api.domain.shop.entity.ShopEntity;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -16,5 +18,9 @@ public interface ShopMapper {
     List<ShopDTO> getShopList(SearchRequestDTO search);
     int getShopListCount(SearchRequestDTO search);
     ShopEntity getShopDetail(int shopSeq);
-float getShopStarRate(int shopSeq);
+    float getShopStarRate(int shopSeq);
+
+    int insertShopData(ShopInsertDTO shopInsertDTO);
+    int updateShopData(ShopUpdateDTO shopUpdateDTO);
+    int deleteShopData(int id);
 }

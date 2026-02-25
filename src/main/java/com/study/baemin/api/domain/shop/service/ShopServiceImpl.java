@@ -4,6 +4,8 @@ import com.study.baemin.api.domain.common.dto.PagingDto;
 import com.study.baemin.api.domain.common.dto.SearchRequestDTO;
 import com.study.baemin.api.domain.shop.dto.ShopDTO;
 import com.study.baemin.api.domain.shop.dto.ShopDetailDTO;
+import com.study.baemin.api.domain.shop.dto.ShopInsertDTO;
+import com.study.baemin.api.domain.shop.dto.ShopUpdateDTO;
 import com.study.baemin.api.domain.shop.entity.ShopEntity;
 import com.study.baemin.api.domain.shop.repository.ShopMapper;
 import org.springframework.beans.BeanUtils;
@@ -39,5 +41,25 @@ public class ShopServiceImpl implements ShopService{
         shopDetailDTO.setShopRate(shopMapper.getShopStarRate(shopSeq));
 
         return shopDetailDTO;
+    }
+
+    @Override
+    public String insertShopData(ShopInsertDTO shopInsertDTO) {
+int result=shopMapper.insertShopData(shopInsertDTO);
+
+        return result > 0? "성공" : "실패";
+    }
+
+    @Override
+    public String updateShopData(int id, ShopUpdateDTO shopUpdatetDTO) {
+        shopUpdatetDTO.setShopSeq(id);
+        int result=shopMapper.updateShopData(shopUpdatetDTO);
+        return result > 0? "성공" : "실패";
+    }
+
+    @Override
+    public String deleteShopData(int id) {
+        int result=shopMapper.deleteShopData(id);
+        return result > 0? "성공" : "실패";
     }
 }

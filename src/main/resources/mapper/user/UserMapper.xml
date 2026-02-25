@@ -7,28 +7,93 @@
 
     <select id="getAllUser" resultType="user">
         SELECT *
-        FROM tb_member
+        FROM tb_user
+
+    </select>
+
+    <select id="getAllUserDetail" resultType="userDetail">
+        SELECT
+        u.*,
+        d.*
+        FROM tb_user u
+        LEFT JOIN tb_user_detail d
+        ON u.USER_SEQ = d.USER_SEQ
 
     </select>
 
     <select id="getUserTarget" resultType="user" parameterType="String">
         SELECT *
-        FROM tb_member
-        WHERE mem_id=#{_id}
+        FROM tb_user
+        WHERE user_seq=#{_id}
 
     </select>
 
     <select id="getUserByName" resultType="user" parameterType="String">
         SELECT *
-        FROM tb_member
+        FROM tb_user
         WHERE name like '%'+#{_name}+'%'
 
     </select>
 
-    <insert id="createUser" parameterType="UserCreateRequestDto">
-        INSERT tb_member (MEM_ID, NAME, EMAIL, GRADE, CREATED_AT)
-        values (#{id},#{name},#{email}, #{grade} ,now())
+    <insert id="insertUser" parameterType="UserCreateRequestDto" useGeneratedKeys="true" keyProperty="userSeq" keyColumn="USER_SEQ">
+        INSERT tb_user ( USER_NAME, USER_NICKNAME,USER_GRADE, USER_ADDRESS )
+        values (#{name},#{nickname},#{grade} ,#{address})
 
     </insert>
+
+    <insert id="insertUserDetail" parameterType="UserCreateRequestDto">
+        INSERT tb_user_detail (USER_SEQ,USER_EMAIL, USER_PW, USER_CREATED_AT, USER_PHONE)
+        values (#{userSeq},#{email}, #{pw}, now(), #{phone})
+
+    </insert>
+
+    <update id="updateUserData">
+        UPDATE tb_user
+<set>
+        <if test="dto.name != null and dto.name != ''">
+            ,USER_NAME=#{dto.name}
+        </if>
+        <if test="dto.nickname != null and dto.nickname != ''">
+            ,USER_NICKNAME=#{dto.nickname}
+        </if>
+        <if test="dto.grade != null and dto.grade != ''">
+            ,USER_GRADE=#{dto.grade}
+        </if>
+        <if test="dto.address != null and dto.address != ''">
+            ,USER_ADDRESS=#{dto.address}
+        </if>
+</set>
+WHERE USER_SEQ=#{id}
+    </update>
+
+    <update id="updateUserDetailData">
+UPDATE tb_user_detail
+
+        <set>
+        <if test="dto.email != null and dto.email != ''">
+            ,USER_EMAIL=#{dto.email}
+        </if>
+        <if test="dto.pw != null and dto.pw != ''">
+            ,USER_PW=#{dto.pw}
+        </if>
+        <if test="dto.phone != null and dto.phone != ''">
+            ,USER_PHONE=#{dto.phone}
+        </if>
+
+        WHERE USER_SEQ=#{id}
+        </set>
+    </update>
+
+    <delete id="deleteUserData" parameterType="Integer">
+        DELETE FROM tb_user
+        WHERE USER_SEQ=#{id}
+
+    </delete>
+
+    <delete id="deleteUserDetailData" parameterType="Integer">
+        DELETE FROM tb_user_detail
+        WHERE USER_SEQ=#{id}
+
+    </delete>
 
 </mapper>

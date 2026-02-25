@@ -49,5 +49,46 @@
         shop_seq=#{shopSeq}
     </select>
 
+    <insert id="insertShopData" parameterType="ShopInsertDTO">
+        INSERT INTO tb_shop(OWNER_SEQ, SHOP_NAME, SHOP_ADR1,SHOP_ADR2, SHOP_NUM,CLOSE_YN, CREATE_DATE, CREATE_NAME)
+        VALUES(#{ownerSeq},#{shopName},#{shopAddress1},#{shopAddress2},#{shopNum},#{closeYN},now(), #{createUser})
+    </insert>
+
+    <update id="updateShopData" parameterType="ShopUpdateDTO">
+        UPDATE TB_SHOP SET
+        UPDATE_DATE=NOW()
+
+        <if test="createUser != null and createUser != ''">
+        ,UPDATE_NAME= #{createUser}
+        </if>
+
+        <if test="ownerSeq != null and ownerSeq != ''">
+            ,OWNER_SEQ=#{ownerSeq}
+        </if>
+        <if test="shopName != null and shopName != ''">
+            ,SHOP_NAME=#{shopName}
+        </if>
+        <if test="shopAddress1 != null and shopAddress1 != ''">
+            ,SHOP_ADR1=#{shopAddress1}
+        </if>
+        <if test="shopAddress2 != null and shopAddress2 != ''">
+            ,SHOP_ADR2=#{shopAddress2}
+        </if>
+        <if test="shopNum != null and shopNum != ''">
+            ,SHOP_NUM=#{shopNum}
+        </if>
+        <if test="closeYN != null and closeYN != ''">
+            ,CLOSE_YN=#{closeYN}
+        </if>
+        where
+        SHOP_SEQ=#{shopSeq}
+
+    </update>
+
+    <delete id="deleteShopData" parameterType="Integer">
+    delete from tb_shop
+        where SHOP_SEQ=#{id}
+
+    </delete>
 
 </mapper>
